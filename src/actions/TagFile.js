@@ -28,6 +28,8 @@ export const tagFile = async (bot, msg) => {
   const messageWithFile = msg.reply_to_message;
   const tagModel = await Tag.findByTag(msg.text);
 
+  console.log(tagModel);
+
   const isNew = tagModel.length === 0;
   const tagName = msg.text;
   const sender = {
@@ -36,19 +38,23 @@ export const tagFile = async (bot, msg) => {
   };
 
   var fileId = '';
+  var type = '';
   switch (true) {
     case isPhoto(messageWithFile):
       fileId = messageWithFile.photo[messageWithFile.photo.length - 1].file_id;
+      type = 'photo';
       break;
     case isVideo(messageWithFile):
       fileId = messageWithFile.video.file_id;
+      type = 'video';
       break;
     case isFile(messageWithFile):
       fileId = messageWithFile.document.file_id;
+      type = 'file';
       break;
   }
 
-  isNew ? createTag(fileId, tagName, sender) : updateTag(tagModel[0], fileId, sender, bot, msg);
+  isNew ? createTag(fileId, type, tagName, sender, msg, bot) : updateTag(tagModel[0], fileId, sender, bot, msg);
 }
 
 export const isEligibleForTagging = (msg) => {
@@ -60,11 +66,14 @@ export const isEligibleForTagging = (msg) => {
   return false;
 }
 
-export const createTag = (fileId, tagName, sender) => {
+export const createTag = (fileId, type, tagName, sender, msg, bot) => {
   const fileIdsAndSenders = {};
-  fileIdsAndSenders[fileId] = [
-    sender,
-  ];
+  fileIdsAndSenders[fileId] = {
+    type,
+    senders: [
+      sender,
+    ],
+  };
 
   const createdTag = Tag({
     tag: tagName,
@@ -72,31 +81,31 @@ export const createTag = (fileId, tagName, sender) => {
   });
 
   console.log(`Saving new tag ${tagName}.`);
+  bot.sendMessage(msg.chat.id, `Tagged file with ${tagName}`);
   Tag.saveTag(createdTag);
 }
 
 export const updateTag = (tag, fileId, sender, bot, msg) => {
-  console.log(tag);
-  console.log(sender);
-  if (didSenderAlreadyTagThisFile(sender, tag.fileIdsAndSenders[fileId])) {
-    bot.sendMessage(msg.chat.id, "You already tagged this file, cunt.");
-
-    return;
-  }
-
   if (tag.fileIdsAndSenders[fileId]) {
     console.log(`Updating tag ${msg.text} with new sender.`)
+
+    if (didSenderAlreadyTagThisFile(sender, tag.fileIdsAndSenders[fileId])) {
+      bot.sendMessage(msg.chat.id, "You already tagged this file, cunt.");
+
+      return;
+    }
+
+    bot.sendMessage(msg.chat.id, `Tagged file with ${msg.text}`);
     tag.fileIdsAndSenders[fileId].push(sender);
   } else {
     console.log(`Updating tag ${msg.text} with new file.`)
+    bot.sendMessage(msg.chat.id, `Tagged file with ${msg.text}`);
     tag.fileIdsAndSenders[fileId] = [
       sender,
     ];
   }
 
-  console.log(tag);
-
-  Tag.saveTag(tag);
+  Tag.saveTag(Tag(tag));
 };
 
 export const didSenderAlreadyTagThisFile = (sender, tagSenderList) => {
@@ -108,5 +117,5 @@ export const didSenderAlreadyTagThisFile = (sender, tagSenderList) => {
     return false;
   });
 
-  return foundSenderWithSameId.count === 1;
+  return foundSenderWithSameId.length === 1;
 };
