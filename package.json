@@ -1,0 +1,25 @@
+{
+  "name": "linkmenotbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:CShigaki/linkmenotbot.git",
+  "author": "Celso Takeo Shigaki <celsomaker@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "babel-node index.js",
+    "dev": "babel-watch index.js",
+    "data": "babel-node initial-data/add_initial_data.js",
+    "keyboard": "babel-node keyboard_example.js"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "mongoose": "^5.2.6",
+    "node-telegram-bot-api": "^0.30.0",
+    "telegram-keyboard-wrapper": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-watch": "^2.0.7"
+  }
+}
