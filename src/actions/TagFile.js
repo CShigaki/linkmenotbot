@@ -24,11 +24,17 @@ const isFile = (msg) => {
   return false;
 }
 
+const isGif = (msg) => {
+  if (msg.animation) {
+    return true;
+  }
+
+  return false;
+}
+
 export const tagFile = async (bot, msg) => {
   const messageWithFile = msg.reply_to_message;
   const tagModel = await Tag.findByTag(msg.text);
-
-  console.log(tagModel);
 
   const isNew = tagModel.length === 0;
   const tagName = msg.text;
@@ -51,6 +57,10 @@ export const tagFile = async (bot, msg) => {
     case isFile(messageWithFile):
       fileId = messageWithFile.document.file_id;
       type = 'file';
+      break;
+    case isGif(messageWithFile):
+      fileId = messageWithFile.animation.file_id;
+      type = 'animation';
       break;
   }
 
