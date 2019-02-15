@@ -6,7 +6,7 @@ export const handleStart = (bot, msg) => {
   message += "2. Reply to the file/media with a hashtag and it's done\n\n";
   message += "Whenever you want me to send the files you tagged, you just need to type the hashtag you used to tag them.\n\n";
   message += "If you have any suggestions or feature requests, message @celsao.\n";
-  message += "Also, ffs don't tag CP. Thank you.";
+  message += "Also, ffs don't tag cp. Thank you.";
 
   bot.sendMessage(msg.chat.id, message)
 }
