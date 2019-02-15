@@ -36,6 +36,8 @@ export const tagFile = async (bot, msg) => {
   const messageWithFile = msg.reply_to_message;
   const tagModel = await Tag.findByTag(msg.text);
 
+  console.log(tagModel);
+
   const isNew = tagModel.length === 0;
   const tagName = msg.text;
   const sender = {

@@ -9,7 +9,7 @@ import { sendFilesTaggedWith } from './src/actions/SendTaggedFiles';
 connectToDb();
 
 const TelegramBot = require('node-telegram-bot-api');
-const token = '653704711:AAG-GGHb-H9VgfcDd-Eurfzb0peniaPdsdU';
+const token = 'Token Bitch';
 
 const bot = new TelegramBot(token, { polling: true });
 
