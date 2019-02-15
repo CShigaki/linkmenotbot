@@ -102,7 +102,8 @@ export const updateTag = (tag, fileId, sender, bot, msg) => {
     console.log(`Updating tag ${msg.text} with new sender.`)
 
     if (didSenderAlreadyTagThisFile(sender, tag.fileIdsAndSenders[fileId])) {
-      bot.sendMessage(msg.chat.id, "You already tagged this file, cunt.");
+      bot.sendMessage(msg.chat.id, `Tagged file with ${msg.text}`);
+      // bot.sendMessage(msg.chat.id, "You already tagged this file, cunt.");
 
       return;
     }
