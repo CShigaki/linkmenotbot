@@ -121,7 +121,7 @@ export const updateTag = (tag, fileId, sender, bot, msg) => {
 };
 
 export const didSenderAlreadyTagThisFile = (sender, tagSenderList) => {
-  const foundSenderWithSameId = tagSenderList.filter((currentSender) => {
+  const foundSenderWithSameId = tagSenderList.senders.filter((currentSender) => {
     if (currentSender.id === sender.id) {
       return true;
     }
