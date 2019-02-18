@@ -66,7 +66,7 @@ export const tagFile = async (bot, msg) => {
       break;
   }
 
-  isNew ? createTag(fileId, type, tagName, sender, msg, bot) : updateTag(tagModel[0], fileId, sender, bot, msg);
+  isNew ? createTag(fileId, type, tagName, sender, msg, bot) : updateTag(tagModel[0], type, fileId, sender, bot, msg);
 }
 
 export const isEligibleForTagging = (msg) => {
@@ -97,7 +97,7 @@ export const createTag = (fileId, type, tagName, sender, msg, bot) => {
   Tag.saveTag(createdTag);
 }
 
-export const updateTag = (tag, fileId, sender, bot, msg) => {
+export const updateTag = (tag, type, fileId, sender, bot, msg) => {
   if (tag.fileIdsAndSenders[fileId]) {
     console.log(`Updating tag ${msg.text} with new sender.`)
 
@@ -113,9 +113,12 @@ export const updateTag = (tag, fileId, sender, bot, msg) => {
   } else {
     console.log(`Updating tag ${msg.text} with new file.`)
     bot.sendMessage(msg.chat.id, `Tagged file with ${msg.text}`);
-    tag.fileIdsAndSenders[fileId] = [
-      sender,
-    ];
+    tag.fileIdsAndSenders[fileId] = {
+      type,
+      senders: [
+        sender,
+      ],
+    }
   }
 
   Tag.saveTag(Tag(tag));
