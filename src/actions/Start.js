@@ -5,7 +5,7 @@ export const handleStart = (bot, msg) => {
   message += "1. Add me in the group where the file/media you want to tag is OR send it to me via private message\n";
   message += "2. Reply to the file/media with a hashtag and it's done\n\n";
   message += "Whenever you want me to send the files you tagged, you just need to type the hashtag you used to tag them.\n\n";
-  message += "If you have any suggestions or feature requests, message @celsao.\n";
+  message += "The owner of this bot does not take responsibility for what is tagged. Every file tagged is responsibility of who tagged it, so be aware of what you tag.\n\n";
   message += "Also, ffs don't tag cp. Thank you.";
 
   bot.sendMessage(msg.chat.id, message)
