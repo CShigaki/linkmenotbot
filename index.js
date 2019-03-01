@@ -28,7 +28,7 @@ bot.on('message', (msg) => {
       tagFile(bot, tag, msg);
     }
     else {
-      sendFilesTaggedWith(bot, tag, msg.chat.id);
+      sendFilesTaggedWith(bot, tag, msg.chat.id, msg.chat.type);
     }
   }
 });
