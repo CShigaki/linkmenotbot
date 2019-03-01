@@ -22,12 +22,13 @@ bot.onText(/\/help/i, (msg) => {
 });
 
 bot.on('message', (msg) => {
-  if ('#' === msg.text.charAt(0) && msg.text.length != 1) {
+  let tag = msg.text.split(' ')[0];
+  if ('#' === tag.charAt(0) && tag != 1) {
     if (isEligibleForTagging(msg)) {
-      tagFile(bot, msg);
+      tagFile(bot, tag, msg);
     }
     else {
-      sendFilesTaggedWith(bot, msg);
+      sendFilesTaggedWith(bot, tag, msg.chat.id);
     }
   }
 });

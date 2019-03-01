@@ -1,29 +1,28 @@
 import Tag from '../models/Tag';
 
-export const sendFilesTaggedWith = async (bot, msg) => {
-  const tag = msg.text;
+export const sendFilesTaggedWith = async (bot, tag, chatId) => {
   var tagModel = await Tag.findByTag(tag);
 
   if (tagModel.length === 0) {
-    bot.sendMessage(msg.chat.id, `No files tagged with ${msg.text} yet.`);
+    bot.sendMessage(chatId, `No files tagged with ${tag} yet.`);
 
     return;
   }
 
   tagModel = tagModel[0];
-  bot.sendMessage(msg.chat.id, `Sending ${Object.keys(tagModel.fileIdsAndSenders).length} files tagged with ${msg.text}`)
+  bot.sendMessage(chatId, `Sending ${Object.keys(tagModel.fileIdsAndSenders).length} files tagged with ${tag}`)
     .then(() => {
       Object.keys(tagModel.fileIdsAndSenders).map((fileId) => {
         const type = tagModel.fileIdsAndSenders[fileId].type;
         switch (type) {
           case 'photo':
-            bot.sendPhoto(msg.chat.id, fileId);
+            bot.sendPhoto(chatId, fileId);
             break;
           case 'video':
-            bot.sendVideo(msg.chat.id, fileId);
+            bot.sendVideo(chatId, fileId);
             break;
           case 'file':
-            bot.sendDocument(msg.chat.id, fileId);
+            bot.sendDocument(chatId, fileId);
             break;
         }
       });
