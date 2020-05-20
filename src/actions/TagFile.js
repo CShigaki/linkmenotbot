@@ -32,12 +32,16 @@ const isGif = (msg) => {
   return false;
 }
 
-export const tagFile = async (bot, tag, msg) => {
-  const messageWithFile = msg.reply_to_message;
+export const tagFile = async (bot, tag, msg, hasTagAsLastName) => {
+  var messageWithFile = null;
+  if (!hasTagAsLastName) {
+    messageWithFile = msg.reply_to_message;
+  }
+  else {
+    messageWithFile = msg;
+  }
+
   const tagModel = await Tag.findByTag(tag);
-
-  console.log(tagModel);
-
   const isNew = tagModel.length === 0;
   const sender = {
     id: msg.from.id,
@@ -68,9 +72,16 @@ export const tagFile = async (bot, tag, msg) => {
   isNew ? createTag(fileId, type, tag, sender, msg, bot) : updateTag(tagModel[0], type, fileId, sender, bot, tag, msg.chat.id);
 }
 
-export const isEligibleForTagging = (msg) => {
-  const messageReplied = msg.reply_to_message;
-  if (messageReplied && (isPhoto(messageReplied) || isVideo(messageReplied) || isFile(messageReplied))) {
+export const isEligibleForTagging = (msg, hasLastNameAsTag) => {
+  var message = null;
+  if (!hasLastNameAsTag) {
+    message = msg.reply_to_message;
+  }
+  else {
+    message = msg;
+  }
+
+  if (message && (isPhoto(message) || isVideo(message) || isFile(message) || isGif(message))) {
     return true;
   }
 
