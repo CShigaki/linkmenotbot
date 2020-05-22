@@ -20,9 +20,14 @@ export const sendFilesTaggedWith = async (bot, tag, chatId, chatType) => {
   }
 
   bot.sendMessage(chatId, message)
-    .then(() => {
+    .then(async () => {
       const fileIds = Object.keys(tagModel.fileIdsAndSenders);
       for (var index = 0; index < numberOfFilesToSend; index++) {
+        if (index !== 0 && index % 20 === 0) {
+          // console.log(`File number ${index}. Applying delay`);
+          await delay(10000);
+        }
+
         const fileId = fileIds[index];
         const type = tagModel.fileIdsAndSenders[fileId].type;
         switch (type) {
@@ -39,3 +44,11 @@ export const sendFilesTaggedWith = async (bot, tag, chatId, chatType) => {
       }
     });
 }
+
+const delay = async (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+};
