@@ -9,7 +9,6 @@ export const handleStart = (bot, msg) => {
   message += "If you do that, all files you send me will be automatically tagged with that hashtag.\n\n"
   message += "Whenever you want me to send the files you tagged, you just need to type the hashtag you used to tag them.\n\n";
   message += "The owner of this bot does not take responsibility for what is tagged. Every file tagged is responsibility of who tagged it, so be aware of what you tag.\n\n";
-  message += "Also, ffs don't tag cp. Thank you.";
 
   bot.sendMessage(msg.chat.id, message)
 }
